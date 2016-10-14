@@ -1,0 +1,13 @@
+version: '2'
+services:
+  app:
+    restart: always
+    build: ./prestonlloyd.com
+    volumes:
+    - ./prestonlloyd.com:/opt/prestonlloyd
+    ports:
+    - "3000:80"
+    depends_on:
+    - redis
+  db:
+    image: redis
