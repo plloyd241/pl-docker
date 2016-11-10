@@ -3,14 +3,36 @@ services:
   app:
     build: ./prestonlloyd.com
     env_file: .env
+    links:
+    - postgres:postgres
     volumes:
     - ./prestonlloyd.com:/opt/prestonlloyd
-    ports:
-    - '3000:3000'
+    - /opt/prestonlloyd/static
+    expose:
+    - '3000'
     depends_on:
     - redis
     command: 'npm run start'
+
+  nginx:
+    build: ./nginx
+    volumes:
+    - /www/static
+    volumes_from:
+    - app
+    ports:
+    - '3000:80'
+    links:
+    - 'app:app'
+
+  postgres:
+    image: postgres
+    volumes:
+    - /var/lib/postgresql
+    ports:
+    - '5432:5432'
+
   redis:
     image: redis
     ports:
-    - "6379:6379"
+    - '6379:6379'
