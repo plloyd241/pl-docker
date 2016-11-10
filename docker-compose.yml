@@ -1,13 +1,16 @@
 version: '2'
 services:
   app:
-    restart: always
     build: ./prestonlloyd.com
+    env_file: .env
     volumes:
     - ./prestonlloyd.com:/opt/prestonlloyd
     ports:
-    - "3000:3000"
+    - '3000:3000'
     depends_on:
     - redis
+    command: 'npm run start'
   redis:
     image: redis
+    ports:
+    - "6379:6379"
